@@ -10,6 +10,7 @@ Meteor.startup(() => {
         };
 
         let func = (options, callback) => {
+            // if proxy sources block you, set proxy for use proxy-lists like below:
             process.env.HTTP_PROXY = "http://127.0.0.1:8580";
             process.env.HTTPS_PROXY = "http://127.0.0.1:8580";
 
@@ -19,7 +20,7 @@ Meteor.startup(() => {
             let success;
             let proxiesCount;
             gettingProxies.on('data', Meteor.bindEnvironment((proxies) => {
-                console.log("Proxy Received: " + proxies.length);
+                console.log("Proxy Fetched: " + proxies.length);
                 proxies.forEach((proxy) => {
                     proxyList.push(proxy.protocols[0] + "://" + proxy.ipAddress + ":" + proxy.port);
                 });
@@ -31,6 +32,10 @@ Meteor.startup(() => {
             }));
 
             gettingProxies.once('end', Meteor.bindEnvironment(() => {
+                // unset proxy after fetch proxy finished
+                process.env.HTTP_PROXY = null;
+                process.env.HTTPS_PROXY = null;
+
                 if (proxyList.length > 0) {
                     success = true;
                     proxiesCount = proxyList.length;
@@ -42,9 +47,6 @@ Meteor.startup(() => {
                 }
                 callback(null, {success, proxiesCount});
             }));
-
-            process.env.HTTP_PROXY = null;
-            process.env.HTTPS_PROXY = null;
         };
 
         let syncGetProxies = Meteor.wrapAsync(func);
@@ -52,6 +54,6 @@ Meteor.startup(() => {
         let getProxiesResult = syncGetProxies(options);
 
         if (getProxiesResult.success) {
-            console.log("proxiesCount: " + getProxiesResult.proxiesCount);
+            console.log("Total proxy count: " + getProxiesResult.proxiesCount);
         }
 });
