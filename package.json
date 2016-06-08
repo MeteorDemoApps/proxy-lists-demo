@@ -1,0 +1,19 @@
+{
+  "name": "proxy-list-demo",
+  "version": "0.0.1",
+  "description": "simple demo app for using proxy-list npm module in Meteor.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MeteorDemoApps/proxy-lists-demo"
+  },
+  "author": "CYCLOPS @ MeteorDemoApps",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "meteor-node-stubs": "~0.2.0",
+    "proxy-lists": "^1.6.0"
+  }
+}
