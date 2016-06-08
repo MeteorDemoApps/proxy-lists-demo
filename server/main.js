@@ -33,8 +33,8 @@ Meteor.startup(() => {
 
             gettingProxies.once('end', Meteor.bindEnvironment(() => {
                 // unset proxy after fetch proxy finished
-                process.env.HTTP_PROXY = null;
-                process.env.HTTPS_PROXY = null;
+                delete process.env.HTTP_PROXY;
+                delete process.env.HTTPS_PROXY;
 
                 if (proxyList.length > 0) {
                     success = true;
